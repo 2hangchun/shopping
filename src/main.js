@@ -15,5 +15,9 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   router,
-  store
+  store,
+  // 在这里发送请求也可以
+  // mounted() {
+  //   this.$store.dispatch("categoryList");
+  // }
 }).$mount('#app')

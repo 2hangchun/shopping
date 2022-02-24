@@ -32,7 +32,7 @@
         <!-- <a class="logo" title="尚品汇" href="###" target="_blank">
           <img src="./images/logo.png" alt="" />
         </a> -->
-        <router-link class="logo" to='/home'>
+        <router-link class="logo" to="/home">
           <img src="./images/logo.png" alt="" />
         </router-link>
       </h1>
@@ -44,7 +44,11 @@
             class="input-error input-xxlarge"
             v-model="keyword"
           />
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
+          <button
+            class="sui-btn btn-xlarge btn-danger"
+            type="button"
+            @click="goSearch"
+          >
             搜索
           </button>
         </form>
@@ -55,13 +59,13 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      keyword:''
-    }
+      keyword: "",
+    };
   },
-  methods:{
-    goSearch(){
+  methods: {
+    goSearch() {
       // 字符串形式传参
       // this.$router.push('/search/'+this.keyword+'?k=v')
       // 对象形式传参
@@ -74,22 +78,21 @@ export default {
       //     k:'v'
       //   }
       // })
-      let p=this.$router.push({
-        name:'search',
-        params:{
-          keyword:this.keyword.trim()||undefined
-        },
-        query:{
-          k:this.keyword.trim()?this.keyword:'没有传递参数'
-        }
-      })
-      console.log(p);
-    }
-  }
+      const location = {
+        name: "search",
+        params: { keyword: this.keyword.trim() || undefined },
+      };
+      // 判断有没有query参数，有的话需要将params和query合并
+      if (this.$route.query) {
+        location.query = this.$route.query;
+      }
+      this.$router.push(location);
+    },
+  },
 };
 </script>
 
-<style scope lang='less'>
+<style scope lang="less">
 .header {
   & > .top {
     background-color: #eaeaea;

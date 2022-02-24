@@ -118,6 +118,10 @@ export default {
           query.category3id = category3id;
         }
         location.query = query;
+        // 判断有没有params参数，有的话需要将params和query合并
+        if (this.$route.params) {
+          location.params = this.$route.params;
+        }
         this.$router.push(location);
       }
     },
