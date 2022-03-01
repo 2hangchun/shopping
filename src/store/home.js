@@ -14,8 +14,9 @@ const actions = {
         }
     },
     async bannerList({ commit }) {
+        console.log('向服务器发送请求获取数据');
         const result = await reqBannerList()
-        console.log(result);
+        console.log('已经获取到数据');
         if (result.code === 200) {
             commit('BANNERLIST', result.data)
         }
@@ -32,6 +33,7 @@ const mutations = {
         state.categoryList = value.slice(0, -1)
     },
     BANNERLIST(state, value) {
+        console.log('修改仓库数据');
         state.bannerList = value
     },
     FLOORLIST(state, value) {
