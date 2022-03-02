@@ -253,5 +253,7 @@ pubsub-js：vue中几乎不用 全能
 
 vuex
 
+#### 按下回车键搜索需要在input上绑定keyup.enter事件
+
  
 

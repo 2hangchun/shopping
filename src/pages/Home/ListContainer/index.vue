@@ -84,9 +84,7 @@ import { mapState } from "vuex";
 export default {
   name: "ListContainer",
   mounted() {
-    console.log("组件的mounted");
     this.$store.dispatch("bannerList");
-    console.log("初始化swiper");
   },
   computed: {
     ...mapState({

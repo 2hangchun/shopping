@@ -43,6 +43,7 @@
             id="autocomplete"
             class="input-error input-xxlarge"
             v-model="keyword"
+            @keyup.enter="goSearch"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -87,6 +88,9 @@ export default {
         location.query = this.$route.query;
       }
       this.$router.push(location);
+    },
+    test() {
+      console.log(111);
     },
   },
 };

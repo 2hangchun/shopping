@@ -269,7 +269,7 @@ export default {
     }
 
     .v-enter-active {
-      transition: all 0.5s linear;
+      transition: all 0.3s linear;
       overflow: hidden;
     }
   }
