@@ -11,15 +11,37 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类面包屑 -->
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName
+              }}<i @click="removeCategoryName">×</i>
+            </li>
+            <!-- 关键词面包屑 -->
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
+            <!-- 品牌面包屑 -->
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTrademark">×</i>
+            </li>
+            <!-- 属性面包屑 -->
+            <li
+              class="with-x"
+              v-for="(props, index) in searchParams.props"
+              :key="index"
+            >
+              {{ props.split(":")[1] }}
+              <i @click="removeProps(props)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector
+          @trademarkInfo="getTrademarkInfo"
+          @propsInfo="getPropsInfo"
+        />
 
         <!--details-->
         <div class="details clearfix">
@@ -157,15 +179,59 @@ export default {
       Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.$store.dispatch("searchInfo", this.searchParams);
     },
+    removeCategoryName() {
+      Object.assign(this.searchParams, {
+        category1id: undefined,
+        category2id: undefined,
+        category3id: undefined,
+        categoryName: undefined,
+      });
+      // 路由变化会重新发送请求
+      // this.$store.dispatch("searchInfo", this.searchParams);
+      this.$router.push({ name: "search", params: this.$route.params });
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined;
+      this.$bus.$emit("clearKeyword");
+      // 路由变化会重新发送请求
+      // this.$store.dispatch("searchInfo", this.searchParams);
+      this.$router.push({ name: "search", query: { ...this.$route.query } });
+    },
+    removeTrademark() {
+      this.searchParams.trademark = undefined;
+      // 这里路由不会发生变化
+      this.$store.dispatch("searchInfo", this.searchParams);
+      // this.$router.push({ name: "search", query: { ...this.$route.query } });
+    },
+    removeProps(prop) {
+      this.searchParams.props = this.searchParams.props.filter((item) => {
+        item !== prop;
+      });
+      this.getData();
+    },
+    getTrademarkInfo(trademark) {
+      // console.log("我是服组件", data);
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      // console.log(this.searchParams);
+      this.getData();
+    },
+    getPropsInfo(attrId, attrName, attrValue) {
+      // console.log(attrId, attrName, attrValue);
+      const props = `${attrId}:${attrValue}:${attrName}`;
+      if (!this.searchParams.props.includes(props)) {
+        this.searchParams.props.push(props);
+        this.getData();
+      }
+    },
   },
   watch: {
     $route: {
       immediate: true,
       handler() {
         Object.assign(this.searchParams, {
-          category1id: "",
-          category2id: "",
-          category3id: "",
+          category1id: undefined,
+          category2id: undefined,
+          category3id: undefined,
         });
         this.getData();
       },

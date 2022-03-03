@@ -43,7 +43,6 @@
             id="autocomplete"
             class="input-error input-xxlarge"
             v-model="keyword"
-            @keyup.enter="goSearch"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -89,9 +88,12 @@ export default {
       }
       this.$router.push(location);
     },
-    test() {
-      console.log(111);
+    clearKeyword() {
+      this.keyword = "";
     },
+  },
+  mounted() {
+    this.$bus.$on("clearKeyword", this.clearKeyword);
   },
 };
 </script>

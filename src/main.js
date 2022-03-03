@@ -15,6 +15,10 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
+  // 安装全局事件总线
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   router,
   store,
   // 在这里发送请求也可以
