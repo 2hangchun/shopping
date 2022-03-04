@@ -48,23 +48,19 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: isOne }" @click="changeOrder('1')">
+                  <a href="#"
+                    >综合<span v-if="isOne"
+                      >箭头<span v-if="isDesc" class="iconfont icon-down"></span
+                      ><span v-else class="iconfont icon-up"></span></span
+                  ></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isTwo }" @click="changeOrder('2')">
+                  <a href="#"
+                    >价格<span v-if="isTwo"
+                      >箭头<span v-if="isDesc" class="iconfont icon-down"></span
+                      ><span v-else class="iconfont icon-up"></span></span
+                  ></a>
                 </li>
               </ul>
             </div>
@@ -112,35 +108,7 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination />
         </div>
       </div>
     </div>
@@ -163,7 +131,8 @@ export default {
         category3id: "",
         categoryName: "",
         keyword: "",
-        order: "",
+        // 初始值 1:desc
+        order: "1:desc",
         pageNo: 1,
         pageSize: 10,
         props: [],
@@ -173,6 +142,15 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    isOne() {
+      return this.searchParams.order.indexOf("1") !== -1;
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf("2") !== -1;
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf("desc") !== -1;
+    },
   },
   methods: {
     getData() {
@@ -222,6 +200,18 @@ export default {
         this.searchParams.props.push(props);
         this.getData();
       }
+    },
+    changeOrder(flag) {
+      const cur = this.searchParams.order;
+      if (cur.indexOf(flag) !== -1) {
+        this.searchParams.order = `${flag}:${
+          cur.indexOf("desc") !== -1 ? "asc" : "desc"
+        }`;
+      } else {
+        this.searchParams.order = `${flag}:desc`;
+      }
+      this.getData();
+      f;
     },
   },
   watch: {
@@ -483,92 +473,92 @@ export default {
         }
       }
 
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        float: right;
+      // .page {
+      //   width: 733px;
+      //   height: 66px;
+      //   overflow: hidden;
+      //   float: right;
 
-        .sui-pagination {
-          margin: 18px 0;
+      //   .sui-pagination {
+      //     margin: 18px 0;
 
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
+      //     ul {
+      //       margin-left: 0;
+      //       margin-bottom: 0;
+      //       vertical-align: middle;
+      //       width: 490px;
+      //       float: left;
 
-            li {
-              line-height: 18px;
-              display: inline-block;
+      //       li {
+      //         line-height: 18px;
+      //         display: inline-block;
 
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
+      //         a {
+      //           position: relative;
+      //           float: left;
+      //           line-height: 18px;
+      //           text-decoration: none;
+      //           background-color: #fff;
+      //           border: 1px solid #e0e9ee;
+      //           margin-left: -1px;
+      //           font-size: 14px;
+      //           padding: 9px 18px;
+      //           color: #333;
+      //         }
 
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
+      //         &.active {
+      //           a {
+      //             background-color: #fff;
+      //             color: #e1251b;
+      //             border-color: #fff;
+      //             cursor: default;
+      //           }
+      //         }
 
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
+      //         &.prev {
+      //           a {
+      //             background-color: #fafafa;
+      //           }
+      //         }
 
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
+      //         &.disabled {
+      //           a {
+      //             color: #999;
+      //             cursor: default;
+      //           }
+      //         }
 
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
+      //         &.dotted {
+      //           span {
+      //             margin-left: -1px;
+      //             position: relative;
+      //             float: left;
+      //             line-height: 18px;
+      //             text-decoration: none;
+      //             background-color: #fff;
+      //             font-size: 14px;
+      //             border: 0;
+      //             padding: 9px 18px;
+      //             color: #333;
+      //           }
+      //         }
 
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
+      //         &.next {
+      //           a {
+      //             background-color: #fafafa;
+      //           }
+      //         }
+      //       }
+      //     }
 
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
-          }
-        }
-      }
+      //     div {
+      //       color: #333;
+      //       font-size: 14px;
+      //       float: right;
+      //       width: 241px;
+      //     }
+      //   }
+      // }
     }
   }
 }
