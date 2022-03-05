@@ -108,7 +108,14 @@
               </li>
             </ul>
           </div>
-          <Pagination />
+          <Pagination
+            :pageNo="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="total"
+            :totalPages="totalPages"
+            :continues="5"
+            @getPageNo="getPageNo"
+          />
         </div>
       </div>
     </div>
@@ -141,7 +148,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["goodsList"]),
+    ...mapGetters(["goodsList", "totalPages", "total"]),
     isOne() {
       return this.searchParams.order.indexOf("1") !== -1;
     },
@@ -211,7 +218,10 @@ export default {
         this.searchParams.order = `${flag}:desc`;
       }
       this.getData();
-      f;
+    },
+    getPageNo(pageNo) {
+      this.searchParams.pageNo = pageNo;
+      this.getData();
     },
   },
   watch: {
