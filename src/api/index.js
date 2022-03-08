@@ -6,3 +6,4 @@ export const reqCategoryList = () => requests({ url: '/product/getBaseCategoryLi
 export const reqBannerList = () => mockRequests({ url: '/bannerList', method: 'get' })
 export const reqFloorList = () => mockRequests({ url: '/floorList', method: 'get' })
 export const reqSearchInfo = (params) => requests({ url: '/list', method: 'post', data: params })
+export const reqGoodsInfo = (id) => requests({ url: `/item/${id}`, method: 'get' })

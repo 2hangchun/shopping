@@ -70,7 +70,7 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"
+                    <a @click="goDetail(goods.id)"
                       ><img
                         :src="
                           goods.defaultImg
@@ -222,6 +222,9 @@ export default {
     getPageNo(pageNo) {
       this.searchParams.pageNo = pageNo;
       this.getData();
+    },
+    goDetail(id) {
+      this.$router.push({ name: "detail", params: { id } });
     },
   },
   watch: {

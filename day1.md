@@ -271,3 +271,48 @@ vuex
 
 分页连续页码个数
 
+#### 开发页面步骤 
+
+静态页面
+
+接口
+
+vuex
+
+动态效果
+
+#### js获取容器的大小
+
+`dom.style.width/height`只能获取内联样式的宽高，如果节点的样式是在style标签中或者外联的css文件中设置的话，则无法获取
+
+`dom.offsetWidth/offsetHeight`常用，获取的宽高包含border，且不带单位
+
+pageX: 页面X坐标位置
+pageY: 页面Y坐标位置
+
+screenX: 屏幕X坐标位置
+screenY: 屏幕Y坐标位置
+
+clientX: 鼠标的坐标到页面左侧的距离
+clientY: 鼠标的坐标到页面顶部的距离
+
+clientWidth：可视区域的宽度
+clientHeight：可视区域的高度
+
+offsetX：鼠标坐标到元素的左侧的距离
+offsetY：鼠标坐标到元素的顶部的距离（鼠标到 offsetParent 节点的距离，offsetParent是指当前元素最近的使用 position 不为 static 的祖先节点，如果没有使用 position 的祖先节点，它的值将是 body 节点）
+
+offsetLeft：该元素外边框距离包含元素内边框左侧的距离
+offsetTop：该元素外边框距离包含元素内边框顶部的距离
+
+offsetWidth: width + padding-left + padding-right + border-left + border-right
+offsetHeight: height + padding-top + padding-bottom + border-top + border-bottom
+
+#### 放大镜
+
+1.准备一个容器，设置宽高，相对定位；
+
+2.容器里面放一张图片（设置宽高100%），一个容器（用于触发事件，完全覆盖在图片上面，宽高100%，绝对定位，左上偏移量为0），一个遮罩层（用于显示放大的区域，绝对定位，默认不显示，），一个容器（用于预览放大后的图片，设置宽高为图片大小，绝对定位，默认不显示，超出的部分隐藏，并设置左上偏移量，容器内部放一张图片，大小为放大的倍数，绝对定位，并设置左上偏移量为0）
+
+3.在触发事件的容器上绑定mousemove事件，回调函数中设置遮罩层的左上偏移量，同时设置预览容器中的图片的左上偏移量（注意：左上偏移量要乘上负的倍数）
+

@@ -5,26 +5,27 @@ import Home from "@/pages/Home";
 import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import Search from "@/pages/Search";
+import Detail from '@/pages/Detail'
 
-let originPush=VueRouter.prototype.push
-let originReplace=VueRouter.prototype.replace
+let originPush = VueRouter.prototype.push
+let originReplace = VueRouter.prototype.replace
 
-VueRouter.prototype.push=function(location,onComplete,onAbort){
-  if(onComplete&&onAbort){
-    return originPush.call(this,location,onComplete,onAbort)
+VueRouter.prototype.push = function (location, onComplete, onAbort) {
+  if (onComplete && onAbort) {
+    return originPush.call(this, location, onComplete, onAbort)
   }
-  else{
-    return originPush.call(this,location).then(()=>{}).catch(()=>{})
+  else {
+    return originPush.call(this, location).then(() => { }).catch(() => { })
   }
 }
 
 
-VueRouter.prototype.replace=function(location,onComplete,onAbort){
-  if(onComplete&&onAbort){
-    return originReplace.call(this,location,onComplete,onAbort)
+VueRouter.prototype.replace = function (location, onComplete, onAbort) {
+  if (onComplete && onAbort) {
+    return originReplace.call(this, location, onComplete, onAbort)
   }
-  else{
-    return originReplace.call(this,location).then(()=>{}).catch(()=>{})
+  else {
+    return originReplace.call(this, location).then(() => { }).catch(() => { })
   }
 }
 
@@ -34,35 +35,46 @@ export default new VueRouter({
     {
       path: "/home",
       component: Home,
-      meta:{
-        show:true
+      meta: {
+        show: true
       }
     },
     {
       path: "/register",
       component: Register,
-      meta:{
-        show:true
+      meta: {
+        show: true
       }
     },
     {
       path: "/login",
       component: Login,
-      meta:{
-        show:false
+      meta: {
+        show: false
       }
     },
     {
-      name:'search',
+      name: 'search',
       path: "/search/:keyword?",
       component: Search,
-      meta:{
-        show:false
+      meta: {
+        show: false
       }
     },
     {
       path: "*",
       redirect: "/home",
     },
+    {
+      name: 'detail',
+      path: '/detail/:id',
+      component: Detail,
+      meta: {
+        show: true
+      }
+    }
   ],
+  scrollBehavior() {
+    return { y: 0 }
+  }
 });
