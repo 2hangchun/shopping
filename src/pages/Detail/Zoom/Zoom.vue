@@ -31,10 +31,10 @@ export default {
   },
   methods: {
     handleMousemove(event) {
-      const mask = this.$refs.mask;
-      const big = this.$refs.big;
-      const left = event.offsetX - mask.offsetWidth / 2;
-      const top = event.offsetY - mask.offsetHeight / 2;
+      let mask = this.$refs.mask;
+      let big = this.$refs.big;
+      let left = event.offsetX - mask.offsetWidth / 2;
+      let top = event.offsetY - mask.offsetHeight / 2;
       if (left <= 0) {
         left = 0;
       }

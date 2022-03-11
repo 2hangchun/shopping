@@ -113,7 +113,7 @@
                 >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -382,6 +382,24 @@ export default {
         item.isChecked = 0;
       });
       attrObj.isChecked = 1;
+    },
+    async addShopCart() {
+      const skuId = this.$route.params.id;
+      try {
+        await this.$store.dispatch("addOrUpdateShopCart", {
+          skuId,
+          skuNum: this.skuNum,
+        });
+        sessionStorage.setItem("skuInfo", JSON.stringify(this.skuInfo));
+        this.$router.push({
+          path: "/addcartsuccess",
+          query: {
+            skuNum: this.skuNum,
+          },
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
     },
   },
   watch: {
