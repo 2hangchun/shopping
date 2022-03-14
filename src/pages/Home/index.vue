@@ -29,8 +29,16 @@ export default {
     Floor,
     Brand,
   },
-  mounted() {
+  async mounted() {
     this.$store.dispatch("floorList");
+    try {
+      // 如果已经登陆，则需要发送请求获取用户信息
+      if (this.$store.state.user.token) {
+        await this.$store.dispatch("getUserInfo");
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
   },
   computed: {
     ...mapState({ floorList: (state) => state.home.floorList }),

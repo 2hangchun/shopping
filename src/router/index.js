@@ -8,6 +8,7 @@ import Search from "@/pages/Search";
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import store from '@/store'
 
 let originPush = VueRouter.prototype.push
 let originReplace = VueRouter.prototype.replace
@@ -32,7 +33,8 @@ VueRouter.prototype.replace = function (location, onComplete, onAbort) {
 }
 
 Vue.use(VueRouter);
-export default new VueRouter({
+
+let router = new VueRouter({
   routes: [
     {
       path: "/home",
@@ -94,3 +96,39 @@ export default new VueRouter({
     return { y: 0 }
   }
 });
+
+router.beforeEach(async (to, from, next) => {
+  let token = store.state.user.token
+  let name = store.state.user.userInfo.name
+  if (token) {
+    if (to.path === '/login') {
+      next('/')
+    }
+    else {
+      if (name) {
+        next()
+      }
+      else {
+        try {
+          await store.dispatch('getUserInfo')
+          next()
+        } catch (error) {
+          // token过期，需要清除token
+          try {
+            await store.dispatch('logout')
+            next('/login')
+            console.error(error.message)
+          } catch (error) {
+            console.error(error.message)
+          }
+        }
+      }
+
+    }
+  }
+  else {
+    next()
+  }
+})
+
+export default router

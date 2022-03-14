@@ -13,8 +13,12 @@ const requests = axios.create({
 
 requests.interceptors.request.use((config) => {
     nprogress.start()
+    // 可以通过请求头传递所需要的参数
     if (store.state.detail.uuid_token) {
         config.headers.userTempId = store.state.detail.uuid_token
+    }
+    if (store.state.user.token) {
+        config.headers.token = store.state.user.token
     }
     return config
 })
@@ -23,7 +27,7 @@ requests.interceptors.response.use((res) => {
     nprogress.done()
     return res.data
 }, (error) => {
-    return Promise.reject(new Error('fail'))
+    return Promise.reject(new Error(error.message))
 })
 
 export default requests

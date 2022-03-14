@@ -17,7 +17,7 @@ const actions = {
             return true
         }
         else {
-            return Promise.reject(new Error('fail'))
+            return Promise.reject(new Error(result.message))
         }
     }
 }

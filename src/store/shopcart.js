@@ -16,7 +16,7 @@ const actions = {
             return true
         }
         else {
-            return Promise.reject(new Error('fail'))
+            return Promise.reject(new Error(result.message))
         }
     },
     async updateChecked({ commit }, { id, isChecked }) {
@@ -25,7 +25,7 @@ const actions = {
             return true
         }
         else {
-            return Promise.reject(new Error('fail'))
+            return Promise.reject(new Error(result.message))
         }
     },
     deleteSelected({ getters, dispatch }) {
