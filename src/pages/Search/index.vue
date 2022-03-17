@@ -195,13 +195,10 @@ export default {
       this.getData();
     },
     getTrademarkInfo(trademark) {
-      // console.log("我是服组件", data);
       this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
-      // console.log(this.searchParams);
       this.getData();
     },
     getPropsInfo(attrId, attrName, attrValue) {
-      // console.log(attrId, attrName, attrValue);
       const props = `${attrId}:${attrValue}:${attrName}`;
       if (!this.searchParams.props.includes(props)) {
         this.searchParams.props.push(props);

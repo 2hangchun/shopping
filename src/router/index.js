@@ -174,8 +174,6 @@ router.beforeEach(async (to, from, next) => {
   let name = store.state.user.userInfo.name
   if (token) {
     if (to.path === '/login') {
-
-      console.log('token存在', token);
       next('/')
     }
     else {
