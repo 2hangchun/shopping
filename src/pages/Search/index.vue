@@ -72,7 +72,7 @@
                   <div class="p-img">
                     <a @click="goDetail(goods.id)"
                       ><img
-                        :src="
+                        v-lazy="
                           goods.defaultImg
                             ? goods.defaultImg
                             : require('./images/mobile01.png')

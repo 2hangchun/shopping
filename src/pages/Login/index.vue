@@ -90,7 +90,8 @@ export default {
       try {
         const { phone, password } = this;
         await this.$store.dispatch("login", { phone, password });
-        this.$router.replace("/home");
+        let path = this.$route.query.redirect || "/home";
+        this.$router.replace(path);
       } catch (error) {
         console.error(error.message);
       }

@@ -2,6 +2,7 @@ import { reqGetCode, reqRegister, reqLogin, reqUserInfo, reqLogout } from '@/api
 import { setToken, getToken, removeToken } from '@/utils/token'
 const state = {
     code: '',
+    // 这里只是设置的初始值，后续操作不会用到初始值
     token: getToken() || '',
     userInfo: {}
 }
@@ -68,6 +69,7 @@ const mutations = {
         state.userInfo = value
     },
     LOGOUT(state) {
+        state.token = ''
         state.userInfo = {}
         removeToken()
     }

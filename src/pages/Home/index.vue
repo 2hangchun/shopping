@@ -29,12 +29,12 @@ export default {
     Floor,
     Brand,
   },
-  async mounted() {
+  mounted() {
     this.$store.dispatch("floorList");
     try {
       // 如果已经登陆，则需要发送请求获取用户信息
       if (this.$store.state.user.token) {
-        await this.$store.dispatch("getUserInfo");
+        this.getUserInfo();
       }
     } catch (error) {
       console.error(error.message);
@@ -42,6 +42,11 @@ export default {
   },
   computed: {
     ...mapState({ floorList: (state) => state.home.floorList }),
+  },
+  methods: {
+    async getUserInfo() {
+      await this.$store.dispatch("getUserInfo");
+    },
   },
 };
 </script>

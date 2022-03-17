@@ -1,13 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
-import Home from "@/pages/Home";
-import Register from "@/pages/Register";
-import Login from "@/pages/Login";
-import Search from "@/pages/Search";
-import Detail from '@/pages/Detail'
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCart from '@/pages/ShopCart'
 import store from '@/store'
 
 let originPush = VueRouter.prototype.push
@@ -38,31 +30,35 @@ let router = new VueRouter({
   routes: [
     {
       path: "/home",
-      component: Home,
+      component: () => import('@/pages/Home'),
       meta: {
-        show: true
+        show: true,
+        needLogin: false
       }
     },
     {
       path: "/register",
-      component: Register,
+      component: () => import('@/pages/Register'),
       meta: {
-        show: true
+        show: true,
+        needLogin: false
       }
     },
     {
       path: "/login",
-      component: Login,
+      component: () => import('@/pages/Login'),
       meta: {
-        show: false
+        show: false,
+        needLogin: false
       }
     },
     {
       name: 'search',
       path: "/search/:keyword?",
-      component: Search,
+      component: () => import('@/pages/Search'),
       meta: {
-        show: false
+        show: false,
+        needLogin: false
       }
     },
     {
@@ -72,24 +68,100 @@ let router = new VueRouter({
     {
       name: 'detail',
       path: '/detail/:id',
-      component: Detail,
+      component: () => import('@/pages/Detail'),
       meta: {
-        show: true
+        show: true,
+        needLogin: false
+
       }
     },
     {
       path: '/addcartsuccess',
-      component: AddCartSuccess,
+      component: () => import('@/pages/AddCartSuccess'),
       meta: {
-        show: true
+        show: true,
+        needLogin: false
+
       }
     },
     {
       path: '/shopcart',
-      component: ShopCart,
+      component: () => import('@/pages/ShopCart'),
       meta: {
-        show: true
+        show: true,
+        needLogin: false
+
       }
+    },
+    {
+      path: '/trade',
+      component: () => import('@/pages/Trade'),
+      meta: {
+        show: true,
+        needLogin: true
+      },
+      beforeEnter: (to, from, next) => {
+        // 刷新当前页面等同于从 / 到 /trade
+        if (from.path === '/shopcart' || from.path === '/') {
+          next()
+        }
+        else {
+          next(false)
+        }
+      }
+    },
+    {
+      path: '/pay/:orderId',
+      component: () => import('@/pages/Pay'),
+      meta: {
+        show: true,
+        needLogin: true
+      },
+      beforeEnter: (to, from, next) => {
+        if (from.path === '/trade' || from.path === '/') {
+          next()
+        }
+        else {
+          next(false)
+        }
+      }
+    },
+    {
+      path: '/paysuccess',
+      component: () => import('@/pages/PaySuccess'),
+      meta: {
+        show: true,
+        needLogin: true
+      },
+    },
+    {
+      path: '/center',
+      component: () => import('@/pages/Center'),
+      meta: {
+        show: true,
+        needLogin: true
+      },
+      children: [
+        {
+          path: 'myorder',
+          component: () => import('@/pages/Center/MyOrder'),
+          meta: {
+            needLogin: true
+          }
+        },
+        {
+          path: 'grouporder',
+          component: () => import('@/pages/Center/GroupOrder'),
+          meta: {
+            needLogin: true
+          }
+        },
+        {
+          path: '',
+          // redirect: 'grouporder' 这也可以
+          redirect: '/center/myorder'
+        }
+      ]
     }
   ],
   scrollBehavior() {
@@ -102,6 +174,8 @@ router.beforeEach(async (to, from, next) => {
   let name = store.state.user.userInfo.name
   if (token) {
     if (to.path === '/login') {
+
+      console.log('token存在', token);
       next('/')
     }
     else {
@@ -127,7 +201,13 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   else {
-    next()
+    if (!to.meta.needLogin) {
+      next()
+    }
+    else {
+      next(`/login?redirect=${to.path}`)
+    }
+
   }
 })
 
